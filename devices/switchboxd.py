@@ -1,6 +1,26 @@
+import math
+import time
+
 from flask import Flask
 
 app = Flask(__name__)
+
+
+def synthetic_signal(t: float):
+    """Synthetic time-based signal"""
+    return math.sin(math.sqrt(t)) + math.cos(t/2) + 2 + math.cos(math.cos(t))
+
+
+def t_integral(t0, t1, f, steps=1000):
+    """Approximate integral of f() with trapeze method"""
+    assert t0 < t1
+    area = 0
+    delta = t1 - t0
+    dx = delta/steps
+
+    for i in range(steps):
+        area += ((f(t0 + i*dx)) + f(t0 + (i + 1) * dx)) / 2 * dx
+    return area
 
 
 @app.route("/", methods=["GET"])
@@ -93,6 +113,9 @@ relays = {
 
 @app.route("/state/extended", methods=["GET"])
 def state_extended():
+    # scale to minutes
+    t = time.time() / 60
+    delta_t = 60
     return {
         "relays": [
             {
@@ -114,15 +137,15 @@ def state_extended():
             "enabled": 1,
             "powerConsumption": [
                 {
-                    "periodS": 3600,
-                    "value": 0.521
+                    "periodS": delta_t * 60,
+                    "value": t_integral(t-60, t, synthetic_signal)
                 }
             ]
         },
         "sensors": [
             {
                 "type": "activePower",
-                "value": 520,
+                "value": synthetic_signal(t),
                 "trend": 0,
                 "state": 4
             }
