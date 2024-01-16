@@ -114,8 +114,8 @@ relays = {
 @app.route("/state/extended", methods=["GET"])
 def state_extended():
     # scale to minutes
-    t = time.time() / 60
-    delta_t = 60
+    t = time.time()
+    delta_t = 3600
     return {
         "relays": [
             {
@@ -137,8 +137,8 @@ def state_extended():
             "enabled": 1,
             "powerConsumption": [
                 {
-                    "periodS": delta_t * 60,
-                    "value": t_integral(t-60, t, synthetic_signal)
+                    "periodS": delta_t,
+                    "value": t_integral(t-delta_t, t, synthetic_signal)
                 }
             ]
         },
