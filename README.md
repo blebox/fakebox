@@ -13,4 +13,4 @@ Install dependencies:
 
 Run it:
 
-    flask --app app run
+    flask --app devices.<device-name> run
