@@ -26,6 +26,8 @@ STATE_NETWORK = {
     "station_status": 5
 }
 
+POWER_MEASURING_ENABLED = 1
+
 STATE_RELAYS = {
     "0": 0,
     "1": 0,
@@ -247,11 +249,26 @@ def state_post():
         ]
     }
 
+
 @app.route("/state/extended", methods=["GET"])
 def state_extended():
     # scale to minutes
     t = time.time()
     delta_t = 3600
+
+    if POWER_MEASURING_ENABLED:
+        power_measuring = {
+            "enabled": 1,
+            "powerConsumption": [
+                {
+                    "periodS": delta_t,
+                    "value": t_integral(t - delta_t, t, synthetic_signal)
+                }
+            ]
+        }
+    else:
+        power_measuring = {"enabled": 0}
+
     return {
         "relays": [
             {
@@ -269,15 +286,7 @@ def state_extended():
                 "name": "Output no 2"
             }
         ],
-        "powerMeasuring": {
-            "enabled": 1,
-            "powerConsumption": [
-                {
-                    "periodS": delta_t,
-                    "value": t_integral(t - delta_t, t, synthetic_signal)
-                }
-            ]
-        },
+        "powerMeasuring": power_measuring,
         "sensors": [
             {
                 "type": "activePower",
