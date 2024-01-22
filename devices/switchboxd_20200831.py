@@ -8,7 +8,7 @@ import time
 from flask import Flask, request
 from werkzeug.exceptions import BadRequest
 
-from .kit import synthetic_signal, t_integral, require_field
+from .kit import synthetic_signal, t_integral, require_field, device_id
 
 API_VERSION = "20200831"
 START_TIME = time.time()
@@ -44,14 +44,13 @@ def index():
 def info():
     return {
         "device": {
-            "deviceName": f"My SwitchBoxD (v{API_VERSION})",
             "type": "switchBoxD",
             "product": "switchBoxD",
             "apiLevel": API_VERSION,
             "hv": "0.2",
             "fv": "0.247",
-            "id": "6334f7e750b8",
-            "ip": "192.168.1.13"
+            "id": device_id(__name__),
+            "ip": "192.168.1.11"
         }
     }
 
@@ -67,8 +66,8 @@ def api_device_state():
             "apiLevel": API_VERSION,
             "hv": "0.2",
             "fv": "0.247",
-            "id": f"6334f7e750b8-{API_VERSION}",
-            "ip": "192.168.1.13"
+            "id": device_id(__name__),
+            "ip": "192.168.1.11"
         }
     }
 
@@ -111,13 +110,12 @@ def api_device_set():
 
     return {
         "device": {
-            "deviceName": "My BleBox device name",
-            "product": "shutterBoxV2",
-            "type": "shutterBox",
-            "apiLevel": "20200831",
-            "hv": "9.1d",
-            "fv": "0.987",
-            "id": "g650e32d2217",
+            "type": "switchBoxD",
+            "product": "switchBoxD",
+            "apiLevel": API_VERSION,
+            "hv": "0.2",
+            "fv": "0.247",
+            "id": device_id(__name__),
             "ip": "192.168.1.11"
         },
         "network": {

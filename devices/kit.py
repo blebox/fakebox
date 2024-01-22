@@ -1,6 +1,29 @@
+import hashlib
 import math
 
 from werkzeug.exceptions import BadRequest
+
+
+def device_id(ref: str):
+    """Return unique id per ref
+
+    Example usage:
+
+        @app.route("/api/device/state", methods=["GET"])
+        def info():
+            return {
+                "device": {
+                    "deviceName": f"My SwitchBoxD (v{API_VERSION})",
+                    "type": "switchBoxD",
+                    "product": "switchBoxD",
+                    "apiLevel": API_VERSION,
+                    "hv": "0.2",
+                    "fv": "0.247",
+                    "id": device_id(__name__),
+                    "ip": "192.168.1.11"
+                }
+    """
+    return hashlib.md5(ref.encode()).hexdigest()
 
 
 def synthetic_signal(t: float):

@@ -8,7 +8,7 @@ import time
 from flask import Flask, request
 from werkzeug.exceptions import BadRequest
 
-from .kit import require_field
+from .kit import require_field, device_id
 
 API_VERSION = "20190808"
 START_TIME = time.time()
@@ -50,7 +50,7 @@ def info():
             "apiLevel": API_VERSION,
             "hv": "0.2",
             "fv": "0.247",
-            "id": f"6334f7e750b8-{API_VERSION}",
+            "id": device_id(__name__),
             "ip": "192.168.1.11"
         }
     }
@@ -94,13 +94,13 @@ def api_device_set():
 
     return {
         "device": {
-            "deviceName": "My BleBox device name",
-            "product": "shutterBoxV2",
-            "type": "shutterBox",
-            "apiLevel": "20200831",
-            "hv": "9.1d",
-            "fv": "0.987",
-            "id": "g650e32d2217",
+            "deviceName": f"My SwitchBoxD (v{API_VERSION})",
+            "type": "switchBoxD",
+            "product": "switchBoxD",
+            "apiLevel": API_VERSION,
+            "hv": "0.2",
+            "fv": "0.247",
+            "id": device_id(__name__),
             "ip": "192.168.1.11"
         },
         "network": {
