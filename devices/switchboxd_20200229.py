@@ -8,7 +8,7 @@ import time
 from flask import Flask, request
 from werkzeug.exceptions import BadRequest
 
-from .kit import require_field, device_id
+from .kit import require_field, device_id, synthetic_signal, t_integral
 
 API_VERSION = "20200229"
 START_TIME = time.time()
@@ -233,6 +233,27 @@ def state_post():
 
 @app.route("/state/extended", methods=["GET"])
 def state_extended():
+    # scale to minutes
+    t = time.time()
+    delta_t = 3600
+
+    if POWER_MEASURING_ENABLED:
+        power_measuring = {
+            "enabled": 1,
+            "powerConsumption": [
+                {
+                    "periodS": delta_t,
+
+                    # note: let's assume synthetic_signal is power consumption
+                    # at the moment in Watts. Itegral will be in Ws. We need to
+                    # rescale to keep consistent with activePower
+                    "value": t_integral(t - delta_t, t, synthetic_signal) / (1000 * 3600)  # kWh
+                }
+            ]
+        }
+    else:
+        power_measuring = {"enabled": 0}
+
     return {
         "relays": [
             {
@@ -250,7 +271,17 @@ def state_extended():
                 "name": "Output no 2"
             }
         ],
+        "powerMeasuring": power_measuring,
+        "sensors": [
+            {
+                "type": "activePower",
+                "value": synthetic_signal(t),  # [Watt]
+                "trend": 0,
+                "state": 4
+            }
+        ]
     }
+
 
 
 @app.route("/s/<relay>/<state>", methods=["GET"])
