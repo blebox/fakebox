@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 STATE_AP_NETWORK = {
     "apEnable": True,
-    "apSSID": "shutterBox-g650e32d2217",
+    "apSSID": "switchBoxD-g650e32d2217",
     "apPasswd": "my_secret_password"
 }
 
@@ -46,7 +46,6 @@ def info():
         "device": {
             "deviceName": f"My SwitchBoxD (v{API_VERSION})",
             "type": "switchBoxD",
-            "product": "switchBoxD",
             "apiLevel": API_VERSION,
             "hv": "0.2",
             "fv": "0.247",
@@ -76,7 +75,7 @@ def api_device_network():
         "mac": "bb:50:ec:2d:22:17",
         "tunnel_status": 5,
         "apEnable": True,
-        "apSSID": "shutterBox-g650e32d2217",
+        "apSSID": "switchBoxD-g650e32d2217",
         "apPasswd": "my_secret_password",
         "channel": 7
     }
@@ -224,8 +223,8 @@ def api_relay_extended_state():
             {
                 "type": "activePower",
                 "value": synthetic_signal(t),  # [Watt]
-                "trend": 0,
-                "state": 4
+                "trend": 0,  # not used, always 0
+                "state": 0,  # not used, always 0
             }
         ]
     }
@@ -237,7 +236,7 @@ def api_relay_set():
     if not isinstance(relays, list):
         raise BadRequest("Bad payload: .relays must be a list")
 
-    if not (1 <= len(relays) <=2):
+    if not (1 <= len(relays) <= 2):
         raise BadRequest("Error: this device has only two relays")
 
     # todo: forTime control
@@ -269,7 +268,7 @@ def api_relay_set():
 
 @app.route("/s/<relay>/<state>", methods=["GET"])
 def s_relay_state(relay, state):
-    STATE_RELAYS[relay] = int(state)
+    STATE_RELAYS[relay] = int(not STATE_RELAYS[relay]) if state == 2 else state
     return {
         "relays": [
             {
