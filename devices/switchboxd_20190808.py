@@ -245,7 +245,7 @@ def api_relay_set():
         lead = f".relays[{i}]"
         idx = str(require_field(relay, ".relay", int, _lead=lead))
         state = require_field(relay, ".state", int, _lead=lead)
-        state = int(not STATE_RELAYS[idx]) if state == 2 else state
+        state = int(not STATE_RELAYS[idx]) if state == 2 else int(state)
         states[idx] = state
 
     if len(states) != len(relays):
@@ -268,7 +268,7 @@ def api_relay_set():
 
 @app.route("/s/<relay>/<state>", methods=["GET"])
 def s_relay_state(relay, state):
-    STATE_RELAYS[relay] = int(not STATE_RELAYS[relay]) if state == 2 else state
+    STATE_RELAYS[relay] = int(not STATE_RELAYS[relay]) if state == 2 else int(state)
     return {
         "relays": [
             {

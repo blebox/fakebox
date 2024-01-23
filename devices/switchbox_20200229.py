@@ -205,7 +205,7 @@ def state_post():
         lead = f".relays[{i}]"
         idx = str(require_field(relay, ".relay", int, _lead=lead))
         state = require_field(relay, ".state", int, _lead=lead)
-        state = int(not STATE_RELAYS[idx]) if state == 2 else state
+        state = int(not STATE_RELAYS[idx]) if state == 2 else int(state)
         states[idx] = state
 
     if len(states) != len(relays):
@@ -269,7 +269,7 @@ def state_extended():
 @app.route("/s/<state>", methods=["GET"])
 def s_relay_state(state):
     relay = "0"
-    STATE_RELAYS[relay] = int(not STATE_RELAYS[relay]) if state == 2 else state
+    STATE_RELAYS[relay] = int(not STATE_RELAYS[relay]) if state == 2 else int(state)
     return {
         "relays": [
             {
