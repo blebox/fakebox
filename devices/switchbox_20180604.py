@@ -160,14 +160,14 @@ def api_wifi_disconnect():
 
 @app.route("/api/relay/state", methods=["GET"])
 def api_relay_state():
-    return {
-        "relays": [
-            {
-                "relay": 0,
-                "state": STATE_RELAYS["0"]
-            },
-        ]
-    }
+    # note: in this api level, relay state is just an array. In later versions
+    # it is {"relays": []} object
+    return [
+        {
+            "relay": 0,
+            "state": STATE_RELAYS["0"]
+        },
+    ]
 
 
 @app.route("/api/relay/extended/state", methods=["GET"])
@@ -220,11 +220,9 @@ def api_relay_set():
 def s_state(state):
     relay = "0"
     STATE_RELAYS[relay] = int(not STATE_RELAYS[relay]) if state == 2 else int(state)
-    return {
-        "relays": [
-            {
-                "relay": 0,
-                "state": STATE_RELAYS["0"]
-            }
-        ]
-    }
+    return [
+        {
+            "relay": 0,
+            "state": STATE_RELAYS["0"]
+        }
+    ]
