@@ -1,16 +1,16 @@
 """SwitchboxD simulator
 
 Version:
-API docs: https://technical.blebox.eu/openapi_switchbox/openAPI_switchBox_20190808.html
+API docs: https://technical.blebox.eu/openapi_switchbox/openAPI_switchBox_20180604.html
 """
 import time
 
 from flask import Flask, request
 from werkzeug.exceptions import BadRequest
 
-from .kit import require_field, device_id, synthetic_signal, t_integral
+from .kit import require_field, device_id
 
-API_VERSION = "20190808"
+API_VERSION = "20180604"
 START_TIME = time.time()
 
 app = Flask(__name__)
@@ -26,8 +26,6 @@ STATE_NETWORK = {
     "pwd": "my_secret_password",
     "station_status": 5
 }
-
-POWER_MEASURING_ENABLED = 1
 
 STATE_RELAYS = {
     "0": 0,
@@ -174,27 +172,6 @@ def api_relay_state():
 
 @app.route("/api/relay/extended/state", methods=["GET"])
 def api_relay_extended_state():
-    # scale to minutes
-    t = time.time()
-    delta_t = 3600
-
-    if POWER_MEASURING_ENABLED:
-        power_measuring = {
-            "enabled": 1,
-            "powerConsumption": [
-                {
-                    "periodS": delta_t,
-
-                    # note: let's assume synthetic_signal is power consumption
-                    # at the moment in Watts. Itegral will be in Ws. We need to
-                    # rescale to keep consistent with activePower
-                    "value": t_integral(t - delta_t, t, synthetic_signal) / (1000 * 3600)  # kWh
-                }
-            ]
-        }
-    else:
-        power_measuring = {"enabled": 0}
-
     return {
         "relays": [
             {
@@ -204,15 +181,6 @@ def api_relay_extended_state():
                 "defaultForTime": 0,
             },
         ],
-        "powerMeasuring": power_measuring,
-        "sensors": [
-            {
-                "type": "activePower",
-                "value": synthetic_signal(t),  # [Watt]
-                "trend": 0,  # not used, always 0
-                "state": 0,  # not used, always 0
-            }
-        ]
     }
 
 

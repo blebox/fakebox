@@ -10,12 +10,16 @@ function device() {
 
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
 
+# ---
 device switchboxd_20190808 5001
 device switchboxd_20200229 5002
 device switchboxd_20200831 5003
-device switchbox_20190808 5011
-device switchbox_20200229 5012
-device switchbox_20200831 5013
+# ---
+device switchbox_20180604 5011
+device switchbox_20190808 5012
+device switchbox_20200229 5013
+device switchbox_20200831 5014
+device switchbox_20220114 5015
 
 while true; do
   sleep 0.1

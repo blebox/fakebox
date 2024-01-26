@@ -267,7 +267,7 @@ def state_extended():
 
 
 @app.route("/s/<state>", methods=["GET"])
-def s_relay_state(state):
+def s_state(state):
     relay = "0"
     STATE_RELAYS[relay] = int(not STATE_RELAYS[relay]) if state == 2 else int(state)
     return {
