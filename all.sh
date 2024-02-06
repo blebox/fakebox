@@ -20,6 +20,12 @@ device switchbox_20190808 5012
 device switchbox_20200229 5013
 device switchbox_20200831 5014
 device switchbox_20220114 5015
+# ---
+device floodsensor_20200831 5021
+device floodsensor_20210413 5022
+# ---
+device windrainsensor_20200831 5031
+device windrainsensor_20210413 5032
 
 while true; do
   sleep 0.1

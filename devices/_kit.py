@@ -1,11 +1,14 @@
 import hashlib
+import logging
 import math
+import sys
 
 from werkzeug.exceptions import BadRequest
 
 
-def device_id(ref: str):
-    """Return unique id per ref
+# todo: make two param
+def device_id(name_ref: str, ver_ref: str):
+    """Return consistently unique device ID for (device name, api version) pair
 
     Example usage:
 
@@ -23,7 +26,7 @@ def device_id(ref: str):
                     "ip": "192.168.1.11"
                 }
     """
-    return hashlib.md5(ref.encode()).hexdigest()
+    return hashlib.md5(f"{name_ref}-{ver_ref}".encode()).hexdigest()
 
 
 def synthetic_signal(t: float):
@@ -65,3 +68,12 @@ def require_field(data: dict, path: str, of_type=None, _lead=""):
         raise BadRequest(f"Bad payload: {_lead}.{head} has wrong type")
 
     return val
+
+
+def setup_logging(name: str):
+    prefix = name.rsplit(".", 1)[-1]
+    formatter = logging.Formatter(f"{prefix: <19} > %(message)s")
+    handler = logging.StreamHandler(sys.stdout)
+    handler.setFormatter(formatter)
+    logger = logging.getLogger("werkzeug")
+    logger.handlers.append(handler)
