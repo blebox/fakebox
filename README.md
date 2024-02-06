@@ -52,7 +52,7 @@ devices and simplify configuration.
 
 Following is example result of zeroconf discovery in Home Assistant:
 
-![home assistant zeroconf example](docs/example-homeassistant.png)]
+![home assistant zeroconf example](docs/example-homeassistant.png)
 
 
 ## Contributions
