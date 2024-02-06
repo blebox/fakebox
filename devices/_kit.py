@@ -72,7 +72,7 @@ def require_field(data: dict, path: str, of_type=None, _lead=""):
 
 def setup_logging(name: str):
     prefix = name.rsplit(".", 1)[-1]
-    formatter = logging.Formatter(f"{prefix: <19} > %(message)s")
+    formatter = logging.Formatter(f"{prefix: <25} > %(message)s")
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(formatter)
     logger = logging.getLogger("werkzeug")

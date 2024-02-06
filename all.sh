@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 
 function device() {
-  module=$1
-  port=$2
+  local module=$1
+  local port=$2
 
   echo "port[$port]: $module"
-  flask --app devices.$module run --port $port --reload &
+  flask --app devices.$module run --port $port --reload | grep -v "This is a development server" & # who cares
+
+  if command -v dns-sd &> /dev/null; then
+    dns-sd -P $module _bbxsrv local. $port localhost 127.0.0.1 &
+  fi
 }
 
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
