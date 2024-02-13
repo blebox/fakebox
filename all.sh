@@ -30,6 +30,8 @@ device floodsensor_20210413 5022
 # ---
 device windrainsensor_20200831 5031
 device windrainsensor_20210413 5032
+# ---
+device wlightbox_20200229 5041
 
 while true; do
   sleep 0.1
