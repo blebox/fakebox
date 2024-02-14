@@ -72,8 +72,18 @@ def require_field(data: dict, path: str, of_type=None, _lead=""):
 
 def setup_logging(name: str):
     prefix = name.rsplit(".", 1)[-1]
-    formatter = logging.Formatter(f"{prefix: <25} > %(message)s")
+    formatter = logging.Formatter(f"{prefix: <30} > %(message)s")
     handler = logging.StreamHandler(sys.stdout)
     handler.setFormatter(formatter)
     logger = logging.getLogger("werkzeug")
     logger.handlers.append(handler)
+
+
+def step_state(current: float, desired: float, step: float) -> float:
+    if desired == current:
+        return desired
+
+    if abs(desired - current) < step:
+        return desired
+
+    return current + math.copysign(step, desired - current)

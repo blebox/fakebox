@@ -5,12 +5,12 @@ from flask import Blueprint, request
 from . import _kit as kit
 
 
-def make_blueprint(*, api_version: str, device_type: str, product: str = None):
+def make_blueprint(*, api_version: str, device_type: str, product: str = None, name_suffix: str = ""):
     bp = Blueprint('myblueprint', __name__)
     ref_time = time.time()
 
-    device_name = f"My {product or device_type} (v{api_version})"
-    device_id = kit.device_id(product or device_type, api_version)
+    device_name = f"My {product or device_type} {name_suffix} (v{api_version})"
+    device_id = kit.device_id((product or device_type) + name_suffix, api_version)
     ap_ssid = f"{product or device_type}-g650e32d2217"
 
     state_ap_network = {
