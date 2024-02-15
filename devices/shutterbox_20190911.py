@@ -8,7 +8,7 @@ import itertools
 import os
 import threading
 import time
-from enum import IntEnum, StrEnum, Enum, auto
+from enum import IntEnum, StrEnum
 
 from flask import Flask
 
@@ -229,7 +229,6 @@ def s_command(command):
             while (new := next(INTERNAL_STATE["next"])) != current_state:
                 set_state(new)
 
-        print(STATE_SHUTTER)
         return {"shutter": {**STATE_SHUTTER}}
 
 
