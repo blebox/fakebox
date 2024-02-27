@@ -12,17 +12,12 @@ from flask import Flask
 from ._kit import setup_logging
 from ._common_20200831 import make_blueprint
 
-API_VERSION = "20200831"
 DEVICE_TYPE = "multiSensor"
 PRODUCT_NAME = "wind&rainsensor"
 
 setup_logging(__name__)
 app = Flask(__name__)
-app.register_blueprint(make_blueprint(
-    api_version=API_VERSION,
-    device_type=DEVICE_TYPE,
-    product=PRODUCT_NAME
-))
+app.register_blueprint(make_blueprint(device_type=DEVICE_TYPE, product=PRODUCT_NAME))
 
 
 def signal(x):

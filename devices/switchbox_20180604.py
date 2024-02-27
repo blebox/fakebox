@@ -9,7 +9,6 @@ from ._common_20180604 import make_blueprint
 from ._kit import require_field, setup_logging
 
 DEVICE_TYPE = "switchBox"
-API_VERSION = "20180604"
 
 setup_logging(__name__)
 app = Flask(__name__)

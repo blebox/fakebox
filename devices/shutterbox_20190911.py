@@ -15,7 +15,6 @@ from flask import Flask
 from ._kit import setup_logging, step_state
 from ._common_20190911 import make_blueprint
 
-API_VERSION = "20190911"
 DEVICE_TYPE = "shutterBox"
 
 VARIANT = os.environ.get("VARIANT", "")
@@ -24,7 +23,6 @@ FAULTY = bool(os.environ.get("FAULTY"))
 setup_logging(__name__ if not VARIANT else f"{__name__}[{VARIANT}]")
 app = Flask(__name__)
 app.register_blueprint(make_blueprint(
-    api_version=API_VERSION,
     device_type=DEVICE_TYPE,
     name_suffix=os.environ.get("VARIANT", "")
 ))

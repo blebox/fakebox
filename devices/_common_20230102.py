@@ -4,7 +4,7 @@ from flask import Blueprint, request
 
 from . import _kit as kit
 
-API_VERSION = "20220114"
+API_VERSION = "20230102"
 
 
 def make_blueprint(*, device_type: str, product: str = None, name_suffix: str = ""):

@@ -11,11 +11,10 @@ from ._common_20200229 import make_blueprint
 from ._kit import require_field, synthetic_signal, t_integral, setup_logging
 
 DEVICE_TYPE = "switchBox"
-API_VERSION = "20200229"
 
 setup_logging(__name__)
 app = Flask(__name__)
-app.register_blueprint(make_blueprint(api_version=API_VERSION, device_type=DEVICE_TYPE))
+app.register_blueprint(make_blueprint(device_type=DEVICE_TYPE))
 
 POWER_MEASURING_ENABLED = 1
 STATE_RELAYS = {
