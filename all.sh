@@ -43,6 +43,10 @@ MODE=6 VARIANT=awning               device shutterbox_20190911 5057
 MODE=7 VARIANT=screen               device shutterbox_20190911 5058
 MODE=8 VARIANT=curtain              device shutterbox_20190911 5059
 
+# ---
+MODE=0 VARIANT=step-by-step   device gatebox_20230102 5061
+MODE=1 VARIANT=only-open      device gatebox_20230102 5062
+MODE=2 VARIANT=open-close     device gatebox_20230102 5063
 
 # --- faulty devices ---
 FAULTY=1 MODE=3 VARIANT=tilt-faulty device shutterbox_20190911 5953

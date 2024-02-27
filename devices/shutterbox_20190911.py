@@ -22,10 +22,7 @@ FAULTY = bool(os.environ.get("FAULTY"))
 
 setup_logging(__name__ if not VARIANT else f"{__name__}[{VARIANT}]")
 app = Flask(__name__)
-app.register_blueprint(make_blueprint(
-    device_type=DEVICE_TYPE,
-    name_suffix=os.environ.get("VARIANT", "")
-))
+app.register_blueprint(make_blueprint(device_type=DEVICE_TYPE, name_suffix=VARIANT))
 
 
 class StateEnum(IntEnum):
