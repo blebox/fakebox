@@ -12,7 +12,7 @@ DEVICE_TYPE = "switchBox"
 
 setup_logging(__name__)
 app = Flask(__name__)
-app.register_blueprint(make_blueprint(api_version=API_VERSION, device_type=DEVICE_TYPE))
+app.register_blueprint(make_blueprint(device_type=DEVICE_TYPE))
 
 STATE_RELAYS = {
     "0": 0,
