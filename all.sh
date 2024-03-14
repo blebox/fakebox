@@ -1,9 +1,41 @@
 #!/usr/bin/env bash
 
+usage() {
+  echo "Usage: $0 [--help] [-k FILTER]"
+  echo "  --help          Display this help message"
+  echo "  -k FILTER       Filter devices by name"
+  exit 1
+}
+
+while getopts ":hk:" opt; do
+  case ${opt} in
+    h)
+      usage
+      ;;
+    k)
+      MODULE_FILTER=$OPTARG
+      ;;
+    \?)
+      echo "Invalid option: $OPTARG" 1>&2
+      usage
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." 1>&2
+      usage
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
 function device() {
   local module=$1
   local port=$2
   local extra=$3
+
+  # Skip processing if module filter is specified and there's no match
+  if [[ -n $MODULE_FILTER ]] && ! (echo "$module" | grep -q "$MODULE_FILTER"); then
+    return
+  fi
 
   echo "port[$port]: $module"
   flask --app devices.$module run --port $port $extra | grep -v "This is a development server" & # who cares
