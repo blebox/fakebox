@@ -2,31 +2,71 @@
 
 usage() {
   echo "Usage: $0 [--help] [-k FILTER]"
-  echo "  --help          Display this help message"
+  echo "  -h, --help          Display this help message"
   echo "  -k FILTER       Filter devices by name"
+  
+  echo "Available Devices:"
+  echo "------------------"
+  echo "switchboxd_20190808 (port: 5001)"
+  echo "switchboxd_20200229 (port: 5002)"
+  echo "switchboxd_20200831 (port: 5003)"
+  echo "switchbox_20180604 (port: 5011)"
+  echo "switchbox_20190808 (port: 5012)"
+  echo "switchbox_20200229 (port: 5013)"
+  echo "switchbox_20200831 (port: 5014)"
+  echo "switchbox_20220114 (port: 5015)"
+  echo "floodsensor_20200831 (port: 5021)"
+  echo "floodsensor_20210413 (port: 5022)"
+  echo "windrainsensor_20200831 (port: 5031)"
+  echo "windrainsensor_20210413 (port: 5032)"
+  echo "wlightbox_20200229 (port: 5041)"
+  echo "shutterbox_20190911 (port: 5051 to 5059)"
+  echo "gatebox_20230102 (port: 5061 to 5063)"
+  echo "shutterbox_20190911 (port: 5953)"
+  echo "------------------"
   exit 1
 }
 
-while getopts ":hk:" opt; do
-  case ${opt} in
-    h)
+
+# Parsing command-line options using getopt
+options=$(getopt -o hk: --long help -n 'script.sh' -- "$@")
+if [ $? -ne 0 ]; then
+  usage
+fi
+
+eval set -- "$options"
+
+while true; do
+  case "$1" in
+    -h | --help)
       usage
       ;;
-    k)
-      MODULE_FILTER=$OPTARG
+    -k)
+      MODULE_FILTER=$2
+      shift 2
       ;;
-    \?)
-      echo "Invalid option: $OPTARG" 1>&2
-      usage
+    --)
+      shift
+      break
       ;;
-    :)
-      echo "Option -$OPTARG requires an argument." 1>&2
-      usage
+    *)
+      echo "Internal error!"
+      exit 1
       ;;
   esac
 done
-shift $((OPTIND -1))
 
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+  display_available_devices
+  exit 0
+fi
+
+while [[ $# -gt 0 ]]; do
+  echo "Too many arguments: ${@}"
+  usage
+done
+
+# Rest of your script
 function device() {
   local module=$1
   local port=$2

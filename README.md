@@ -74,6 +74,8 @@ Above will start multiple Flask servers with ports preassigned to specific
     port[5058]: shutterbox_20190911
     port[5059]: shutterbox_20190911
     port[5953]: shutterbox_20190911
+## Help Option
+The script currently supports --help -h. When invoked, it displays all available devices.
 ## Contributions
 
 Contributions are welcome. Look around the code and try to follow established patterns.
