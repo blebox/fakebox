@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 
 usage() {
-  echo "Usage: $0 [--help] [-k FILTER]"
-  echo "  -h, --help          Display this help message"
+  echo "Usage: $0 [-h][--help][-k FILTER]"
+  echo "  -h | --help     Display this help message"
   echo "  -k FILTER       Filter devices by name"
-  
-  echo "Available Devices:"
+    echo "Available Devices:"
   echo "------------------"
   echo "switchboxd_20190808 (port: 5001)"
   echo "switchboxd_20200229 (port: 5002)"
@@ -27,34 +26,25 @@ usage() {
   exit 1
 }
 
-
-# Parsing command-line options using getopt
-options=$(getopt -o hk: --long help -n 'script.sh' -- "$@")
-if [ $? -ne 0 ]; then
-  usage
-fi
-
-eval set -- "$options"
-
-while true; do
-  case "$1" in
-    -h | --help)
+while getopts ":hk:" opt; do
+  case ${opt} in
+    h)
       usage
       ;;
-    -k)
-      MODULE_FILTER=$2
-      shift 2
+    k)
+      MODULE_FILTER=$OPTARG
       ;;
-    --)
-      shift
-      break
+    \?)
+      echo "Invalid option: $OPTARG" 1>&2
+      usage
       ;;
-    *)
-      echo "Internal error!"
-      exit 1
+    :)
+      echo "Option -$OPTARG requires an argument." 1>&2
+      usage
       ;;
   esac
 done
+shift $((OPTIND -1))
 
 if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
   display_available_devices
@@ -66,7 +56,6 @@ while [[ $# -gt 0 ]]; do
   usage
 done
 
-# Rest of your script
 function device() {
   local module=$1
   local port=$2
@@ -84,9 +73,7 @@ function device() {
     dns-sd -P $module _bbxsrv local. $port localhost 127.0.0.1 &
   fi
 }
-
 trap "trap - SIGTERM && kill -- -$$" SIGINT SIGTERM EXIT
-
 # ---
 device switchboxd_20190808 5001 --reload
 device switchboxd_20200229 5002 --reload
@@ -114,16 +101,12 @@ MODE=5 VARIANT=material             device shutterbox_20190911 5056
 MODE=6 VARIANT=awning               device shutterbox_20190911 5057
 MODE=7 VARIANT=screen               device shutterbox_20190911 5058
 MODE=8 VARIANT=curtain              device shutterbox_20190911 5059
-
 # ---
 MODE=0 VARIANT=step-by-step   device gatebox_20230102 5061
 MODE=1 VARIANT=only-open      device gatebox_20230102 5062
 MODE=2 VARIANT=open-close     device gatebox_20230102 5063
-
 # --- faulty devices ---
 FAULTY=1 MODE=3 VARIANT=tilt-faulty device shutterbox_20190911 5953
-
-
 while true; do
   sleep 0.1
 done
