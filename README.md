@@ -54,8 +54,30 @@ Following is example result of zeroconf discovery in Home Assistant:
 
 ![home assistant zeroconf example](docs/example-homeassistant.png)
 
+## Running specific simulators
+If you want to run specific simulator (or simulators) as a suit use th provided bash script with extra options:
 
+    ./all.sh -k 20190911
+    
+It can filter by API or a name
+
+Above will start multiple Flask servers with ports preassigned to specific
+`(device, api version)`: 
+
+    $ ./all.sh -k 20190911
+    port[5051]: shutterbox_20190911
+    port[5052]: shutterbox_20190911
+    port[5053]: shutterbox_20190911
+    port[5055]: shutterbox_20190911
+    port[5056]: shutterbox_20190911
+    port[5057]: shutterbox_20190911
+    port[5058]: shutterbox_20190911
+    port[5059]: shutterbox_20190911
+    port[5953]: shutterbox_20190911
+## Help Option
+The script currently supports --help -h. When invoked, it displays all available devices.
 ## Contributions
 
 Contributions are welcome. Look around the code and try to follow established patterns.
 No strict rules. Copy and paste allowed :D
+
