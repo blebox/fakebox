@@ -6,6 +6,9 @@ Important: wLightBox and wLightBoxS have really complex API. This module is high
 incomplete.
 """
 import json
+import os
+from enum import IntEnum
+
 from itertools import zip_longest
 
 from flask import Flask, request
@@ -17,7 +20,21 @@ DEVICE_TYPE = "wLightBox"
 
 setup_logging(__name__)
 app = Flask(__name__)
-app.register_blueprint(make_blueprint(device_type=DEVICE_TYPE))
+
+
+class BleboxColorMode(IntEnum):
+    RGBW = 1  # RGB color-space with color brightness, white brightness
+    RGB = 2  # RGB color-space with color brightness
+    MONO = 3
+    RGBorW = 4  # RGBW entity, where white color is prioritised
+    CT = 5  # color-temperature, brightness, effect
+    CTx2 = 6  # color-temperature, brightness, effect, two instances
+    RGBWW = 7  # RGB with two color-temperature sliders(warm, cold)
+
+
+INIT_MODE = BleboxColorMode(int(os.environ.get("MODE", BleboxColorMode.CTx2)))
+
+app.register_blueprint(make_blueprint(device_type=DEVICE_TYPE, name_suffix=INIT_MODE.name))
 
 STATE_RGBW = {
     # modes according to docs
@@ -32,7 +49,7 @@ STATE_RGBW = {
     #     For two separated 2-channel LED strips
     #     (warm white - 1:(R),2:(B); cold white - 1:(G),2:(W)
     # Note: support for mode 7 (RGBWW) missing
-    "colorMode": 6,
+    "colorMode": INIT_MODE,
     "effectID": 2,
     "desiredColor": "ff003000",
     "currentColor": "ff003000",
