@@ -1,7 +1,7 @@
 """generic multisensor simulator
 
 Important: uses multiSensor API specification
-API docs: https://technical.blebox.eu/openapi_multisensor/openAPI_multiSensor_20210413.html
+API docs: https://technical.blebox.eu/openapi_multisensor/openAPI_multiSensor_20220114.html
 """
 import math
 import statistics
