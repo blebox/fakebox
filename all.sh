@@ -72,15 +72,18 @@ device floodsensor_20210413       5022 --reload
 device windrainsensor_20200831    5031 --reload
 device windrainsensor_20210413    5032 --reload
 # --- lightbox family
-MODE=1 device wlightbox_20200229  5041 --reload
-MODE=2 device wlightbox_20200229  5042 --reload
-MODE=3 device wlightbox_20200229  5043 --reload
-MODE=4 device wlightbox_20200229  5044 --reload
-MODE=5 device wlightbox_20200229  5045 --reload
-MODE=6 device wlightbox_20200229  5046 --reload
-MODE=7 device wlightbox_20200229  5047 --reload
+MODE=1 device wlightbox_20200229  5041 --reload  # RGBW
+MODE=2 device wlightbox_20200229  5042 --reload  # RGB
+MODE=3 device wlightbox_20200229  5043 --reload  # MONO
+MODE=4 device wlightbox_20200229  5044 --reload  # RGBorW
+MODE=5 device wlightbox_20200229  5045 --reload  # CT
+MODE=6 device wlightbox_20200229  5046 --reload  # CTx2
+MODE=7 device wlightbox_20200229  5047 --reload  # RGBWW
 # --- multisensor family
 device multisensor_20220114       5051 --reload
+device multisensor_20230606       5052 --reload
+# --- smartmeter family (multisensor flavour)
+device smartmeter_20230606        5061 --reload
 # --- shutterbox family
 MODE=1 VARIANT=segmented  device shutterbox_20190911 5151
 MODE=2 VARIANT=nocalib    device shutterbox_20190911 5152
